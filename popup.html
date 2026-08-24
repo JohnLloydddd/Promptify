@@ -190,6 +190,23 @@
         box-shadow: var(--shadow-sm);
       }
 
+      /* search */
+      #searchWrap {
+        padding: 0 16px 10px;
+      }
+
+      #searchInput {
+        width: 100%;
+        box-sizing: border-box;
+        font: inherit;
+        font-size: 12.5px;
+        padding: 7px 9px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        background: var(--surface);
+        color: var(--text);
+      }
+
       /* prompt list */
       #promptList {
         display: flex;
@@ -208,7 +225,7 @@
         background: var(--surface);
         border-radius: var(--radius);
         padding: 9px 10px;
-        cursor: pointer;
+        cursor: grab;
         font: inherit;
         color: var(--text);
       }
@@ -220,6 +237,10 @@
 
       .prompt-row:active {
         transform: scale(0.99);
+      }
+
+      .prompt-row.drag-over {
+        border-color: var(--accent);
       }
 
       .prompt-text {
@@ -330,6 +351,11 @@
         border-radius: var(--radius);
         padding: 10px;
         background: var(--surface);
+        cursor: grab;
+      }
+
+      .edit-card.drag-over {
+        border-color: var(--accent);
       }
 
       .edit-card-top {
@@ -394,7 +420,10 @@
         left: 16px;
         right: 16px;
         bottom: 14px;
-        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
         font-size: 12px;
         font-weight: 500;
         padding: 8px 10px;
@@ -412,6 +441,19 @@
       #toast.show {
         opacity: 1;
         transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .toast-action {
+        flex-shrink: 0;
+        background: transparent;
+        border: none;
+        color: inherit;
+        font: inherit;
+        font-weight: 700;
+        text-decoration: underline;
+        padding: 0;
+        cursor: pointer;
       }
 
       #toast.error {
@@ -434,6 +476,10 @@
       </header>
 
       <div id="targetToggle" class="segmented"></div>
+
+      <div id="searchWrap" class="hidden">
+        <input id="searchInput" type="text" placeholder="Search prompts" />
+      </div>
 
       <div id="promptList"></div>
 
@@ -465,6 +511,7 @@
 
     <div id="toast"></div>
 
+    <script src="paste-logic.js"></script>
     <script src="popup.js"></script>
   </body>
 </html>
