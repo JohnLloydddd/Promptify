@@ -1,515 +1,235 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>Promptify</title>
     <style>
       :root {
+        color-scheme: light dark;
         --bg: #ffffff;
         --surface: #f6f6f7;
         --surface-hover: #eeeeef;
         --border: #e4e4e7;
         --text: #18181b;
         --text-muted: #71717a;
-        --accent: #0d9488;
-        --accent-hover: #0f766e;
+        --accent: #6d5bd0;
+        --accent-hover: #5b4bbb;
         --accent-contrast: #ffffff;
+        --success: #0d9488;
         --danger: #dc2626;
         --danger-surface: #fef2f2;
-        --radius-sm: 6px;
-        --radius: 10px;
+        --radius-sm: 7px;
+        --radius: 11px;
         --shadow-sm: 0 1px 2px rgba(24, 24, 27, 0.06);
       }
 
       @media (prefers-color-scheme: dark) {
         :root {
           --bg: #1c1c1f;
-          --surface: #26262a;
-          --surface-hover: #303035;
-          --border: #38383e;
+          --surface: #242428;
+          --surface-hover: #2c2c31;
+          --border: #3a3a42;
           --text: #f4f4f5;
-          --text-muted: #a1a1aa;
-          --accent: #14b8a6;
-          --accent-hover: #2dd4bf;
-          --accent-contrast: #0b1211;
+          --text-muted: #aaa8b4;
+          --accent: #9185ed;
+          --accent-hover: #a59af5;
+          --accent-contrast: #15131e;
+          --success: #2dd4bf;
           --danger: #f87171;
           --danger-surface: #3a1d1d;
           --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
         }
       }
 
-      * {
-        box-sizing: border-box;
-      }
-
+      * { box-sizing: border-box; }
       body {
         margin: 0;
-        width: 320px;
-        max-height: 560px;
+        width: 360px;
+        max-height: 580px;
         overflow-y: auto;
         background: var(--bg);
         color: var(--text);
-        font-family:
-          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-          Arial, sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         font-size: 13px;
       }
+      button, input, textarea { font: inherit; }
+      .view { display: flex; flex-direction: column; }
+      .hidden { display: none !important; }
 
-      .view {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .hidden {
-        display: none !important;
-      }
-
-      /* header */
       header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 14px 16px 10px;
+        padding: 14px 16px 11px;
       }
-
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 7px;
-      }
-
-      .brand-icon {
-        display: block;
-        flex-shrink: 0;
-        border-radius: 5px;
-      }
-
-      .wordmark {
-        position: relative;
-        display: inline-flex;
-        align-items: baseline;
-        font-weight: 800;
-        font-size: 17px;
-        letter-spacing: -0.02em;
-        line-height: 1;
-      }
-
-      .wm-dark {
-        color: #1e1b3a;
-      }
-
-      @media (prefers-color-scheme: dark) {
-        .wm-dark {
-          color: #f4f4f5;
-        }
-      }
-
-      .wm-gradient {
-        background: linear-gradient(100deg, #6d5bd0 10%, #8b7ff0 55%, #4fb8c4 100%);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-      }
-
-      .wm-i {
-        position: relative;
-        display: inline-block;
-      }
-
-      .wm-dot {
-        position: absolute;
-        top: 1px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 4px;
-        height: 4px;
-        border-radius: 50%;
-        background: var(--accent);
-      }
-
-      .wm-spark {
-        position: absolute;
-        top: -7px;
-        right: -11px;
-        width: 10px;
-        height: 10px;
-        color: #8b7ff0;
-      }
+      .brand { display: flex; align-items: center; gap: 8px; }
+      .header-actions { display: flex; align-items: center; gap: 2px; }
+      .brand-icon { display: block; flex-shrink: 0; border-radius: 6px; }
+      .wordmark { position: relative; display: inline-flex; align-items: baseline; font-weight: 800; font-size: 18px; letter-spacing: -0.03em; line-height: 1; }
+      .wm-dark { color: #1e1b3a; }
+      @media (prefers-color-scheme: dark) { .wm-dark { color: var(--text); } }
+      .wm-gradient { background: linear-gradient(100deg, #6d5bd0 10%, #8b7ff0 55%, #4fb8c4 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+      .wm-i { position: relative; display: inline-block; }
+      .wm-dot { position: absolute; top: 1px; left: 50%; width: 4px; height: 4px; border-radius: 50%; background: var(--success); transform: translateX(-50%); }
+      .wm-spark { position: absolute; top: -7px; right: -11px; width: 10px; height: 10px; color: #8b7ff0; }
 
       .icon-btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 28px;
-        height: 28px;
-        border-radius: var(--radius-sm);
-        border: none;
-        background: transparent;
-        color: var(--text-muted);
-        cursor: pointer;
+        width: 32px;
+        height: 32px;
         padding: 0;
-      }
-
-      .icon-btn:hover {
-        background: var(--surface-hover);
-        color: var(--text);
-      }
-
-      .icon-btn svg {
-        width: 16px;
-        height: 16px;
-      }
-
-      /* segmented control */
-      .segmented {
-        display: flex;
-        margin: 0 16px 12px;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
-        padding: 2px;
-        gap: 2px;
-      }
-
-      .segmented button {
-        flex: 1;
         border: none;
+        border-radius: var(--radius-sm);
         background: transparent;
         color: var(--text-muted);
-        font: inherit;
-        font-weight: 500;
-        font-size: 12px;
-        padding: 6px 0;
-        border-radius: 5px;
         cursor: pointer;
       }
+      .icon-btn:hover { background: var(--surface-hover); color: var(--text); }
+      .icon-btn svg { width: 17px; height: 17px; }
 
-      .segmented button.active {
-        background: var(--bg);
-        color: var(--text);
-        box-shadow: var(--shadow-sm);
-      }
-
-      /* search */
-      #searchWrap {
-        padding: 0 16px 10px;
-      }
-
-      #searchInput {
-        width: 100%;
-        box-sizing: border-box;
-        font: inherit;
-        font-size: 12.5px;
-        padding: 7px 9px;
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
-        background: var(--surface);
-        color: var(--text);
-      }
-
-      /* prompt list */
-      #promptList {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        padding: 0 16px;
-      }
-
-      .prompt-row {
+      .site-status {
         display: flex;
         align-items: center;
-        gap: 8px;
-        width: 100%;
-        text-align: left;
-        border: 1px solid var(--border);
-        background: var(--surface);
-        border-radius: var(--radius);
-        padding: 9px 10px;
-        cursor: grab;
-        font: inherit;
-        color: var(--text);
-      }
-
-      .prompt-row:hover {
-        background: var(--surface-hover);
-        border-color: var(--accent);
-      }
-
-      .prompt-row:active {
-        transform: scale(0.99);
-      }
-
-      .prompt-row.drag-over {
-        border-color: var(--accent);
-      }
-
-      .prompt-text {
-        min-width: 0;
-        flex: 1;
-      }
-
-      .prompt-name {
-        font-weight: 600;
-        font-size: 12.5px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .prompt-preview {
-        margin-top: 1px;
-        font-size: 11px;
-        color: var(--text-muted);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .prompt-row .go-arrow {
-        flex-shrink: 0;
-        color: var(--text-muted);
-      }
-
-      .prompt-row .go-arrow svg {
-        width: 13px;
-        height: 13px;
-        display: block;
-      }
-
-      /* footer / add */
-      .add-row {
-        padding: 12px 16px 16px;
-      }
-
-      .btn {
-        font: inherit;
-        font-weight: 600;
-        font-size: 12.5px;
-        padding: 9px 12px;
-        border-radius: var(--radius-sm);
-        border: 1px solid transparent;
-        cursor: pointer;
-      }
-
-      .btn-primary {
-        background: var(--accent);
-        color: var(--accent-contrast);
-        width: 100%;
-      }
-
-      .btn-primary:hover {
-        background: var(--accent-hover);
-      }
-
-      .btn-ghost {
-        background: transparent;
-        border: 1px dashed var(--border);
-        color: var(--text-muted);
-        width: 100%;
-      }
-
-      .btn-ghost:hover {
-        border-color: var(--accent);
-        color: var(--accent);
-      }
-
-      /* empty state */
-      #emptyState {
-        text-align: center;
-        padding: 28px 16px;
-        color: var(--text-muted);
-      }
-
-      #emptyState p {
-        margin: 0 0 12px;
-        font-size: 12.5px;
-      }
-
-      /* edit view */
-      .edit-header {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 14px 16px 10px;
-      }
-
-      .edit-header h1 {
-        font-size: 13px;
-        font-weight: 600;
-        margin: 0;
-      }
-
-      #editList {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        padding: 0 16px;
-      }
-
-      .edit-card {
+        gap: 11px;
+        margin: 0 16px 10px;
+        padding: 11px 12px;
         border: 1px solid var(--border);
         border-radius: var(--radius);
-        padding: 10px;
         background: var(--surface);
-        cursor: grab;
       }
+      .status-dot { width: 10px; height: 10px; flex: 0 0 auto; border-radius: 50%; background: #a1a1aa; box-shadow: 0 0 0 4px color-mix(in srgb, #a1a1aa 18%, transparent); }
+      .site-status.ready .status-dot { background: var(--success); box-shadow: 0 0 0 4px color-mix(in srgb, var(--success) 18%, transparent); }
+      .status-copy { display: flex; min-width: 0; flex-direction: column; }
+      .status-copy strong { font-size: 13px; }
+      .status-copy span { overflow: hidden; color: var(--text-muted); font-size: 11.5px; text-overflow: ellipsis; white-space: nowrap; }
 
-      .edit-card.drag-over {
-        border-color: var(--accent);
-      }
+      .target-actions { display: flex; gap: 8px; padding: 0 16px 10px; }
+      .target-actions button { flex: 1; padding: 9px 8px; border: 1px solid var(--border); border-radius: 9px; background: transparent; color: var(--text-muted); cursor: pointer; }
+      .target-actions button:hover { border-color: var(--accent); color: var(--accent); }
 
-      .edit-card-top {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        margin-bottom: 6px;
-      }
+      #searchWrap { position: relative; padding: 0 16px 11px; }
+      #searchWrap svg { position: absolute; top: 9px; left: 26px; width: 15px; height: 15px; fill: none; stroke: var(--text-muted); stroke-width: 1.8; stroke-linecap: round; }
+      #searchInput { width: 100%; padding: 8px 34px 8px 34px; border: 1px solid var(--border); border-radius: 9px; outline: none; background: var(--surface); color: var(--text); }
+      #searchInput:focus { border-color: var(--accent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 18%, transparent); }
+      .search-key { position: absolute; top: 7px; right: 24px; padding: 1px 6px; border: 1px solid var(--border); border-radius: 5px; color: var(--text-muted); background: var(--bg); font: 11px ui-monospace, monospace; }
 
-      .edit-card-top input[type="text"] {
-        flex: 1;
-        min-width: 0;
-        font: inherit;
-        font-weight: 600;
-        font-size: 12.5px;
-        padding: 6px 8px;
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
-        background: var(--bg);
-        color: var(--text);
-      }
+      #promptList { display: flex; flex-direction: column; gap: 4px; padding: 0 12px; }
+      .section-label { padding: 5px 5px 2px; color: var(--text-muted); font-size: 10.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+      .prompt-row { display: flex; align-items: center; gap: 3px; border: 1px solid transparent; border-radius: 10px; }
+      .prompt-row:hover, .prompt-row.drag-over { border-color: var(--border); background: var(--surface); }
+      .prompt-main { display: flex; min-width: 0; flex: 1; align-items: center; gap: 10px; padding: 8px 5px 8px 8px; border: 0; background: transparent; color: var(--text); text-align: left; cursor: pointer; }
+      .prompt-avatar { display: grid; width: 32px; height: 32px; flex: 0 0 auto; place-items: center; border-radius: 8px; background: color-mix(in srgb, var(--accent) 16%, var(--surface)); color: var(--accent); font-weight: 750; }
+      .prompt-text { min-width: 0; flex: 1; }
+      .prompt-name { display: flex; align-items: center; gap: 4px; font-weight: 650; font-size: 12.5px; white-space: nowrap; }
+      .prompt-name-text, .prompt-preview { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .favorite-mark { color: #d59613; font-size: 11px; }
+      .prompt-preview { margin-top: 1px; color: var(--text-muted); font-size: 11px; }
+      .row-actions { display: flex; padding-right: 4px; }
+      .row-action { display: inline-grid; width: 29px; height: 29px; place-items: center; padding: 0; border: 0; border-radius: 7px; background: transparent; color: var(--text-muted); cursor: pointer; }
+      .row-action:hover { background: var(--surface-hover); color: var(--text); }
+      .row-action.active { color: #d59613; }
+      .row-action svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+      .row-action.active svg { fill: currentColor; }
 
-      .edit-card textarea {
-        width: 100%;
-        min-height: 64px;
-        resize: vertical;
-        font-family: ui-monospace, Consolas, monospace;
-        font-size: 11.5px;
-        line-height: 1.5;
-        padding: 7px 8px;
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
-        background: var(--bg);
-        color: var(--text);
-        white-space: pre;
-        overflow-x: auto;
-      }
+      #emptyState { padding: 26px 16px; color: var(--text-muted); text-align: center; }
+      #emptyState p { margin: 0 0 12px; font-size: 12.5px; }
+      .btn { padding: 9px 12px; border: 1px solid transparent; border-radius: var(--radius-sm); font-weight: 600; font-size: 12.5px; cursor: pointer; }
+      .btn-primary { width: 100%; background: var(--accent); color: white; }
+      .btn-primary:hover { background: var(--accent-hover); }
+      .btn-ghost { width: 100%; border: 1px dashed var(--border); background: transparent; color: var(--text-muted); }
+      .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
 
-      input:focus,
-      textarea:focus,
-      button:focus-visible {
-        outline: 2px solid var(--accent);
-        outline-offset: 1px;
-      }
+      .add-row { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; padding: 10px 16px 14px; border-top: 1px solid var(--border); }
+      .add-link { padding: 4px 0; border: 0; background: transparent; color: var(--accent); font-weight: 650; cursor: pointer; }
+      #promptCount { color: var(--text-muted); font-size: 11px; }
 
-      .delete-btn {
-        color: var(--text-muted);
-      }
+      .edit-header { display: flex; align-items: center; gap: 8px; padding: 14px 16px 10px; }
+      .edit-header h1 { margin: 0; flex: 1; font-size: 13px; font-weight: 600; }
+      .edit-header-actions { display: flex; align-items: center; gap: 2px; }
+      #editList { display: flex; flex-direction: column; gap: 10px; padding: 0 16px; }
+      .edit-card { padding: 10px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); cursor: grab; }
+      .edit-card.drag-over { border-color: var(--accent); }
+      .edit-card-top { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+      .edit-card-top input[type="text"] { min-width: 0; flex: 1; padding: 6px 8px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font-weight: 600; font-size: 12.5px; }
+      .edit-card textarea { width: 100%; min-height: 64px; resize: vertical; padding: 7px 8px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--bg); color: var(--text); font: 11.5px/1.5 ui-monospace, Consolas, monospace; white-space: pre; overflow-x: auto; }
+      .delete-btn:hover { background: var(--danger-surface); color: var(--danger); }
+      .edit-footer { display: flex; flex-direction: column; gap: 8px; padding: 12px 16px 16px; }
 
-      .delete-btn:hover {
-        background: var(--danger-surface);
-        color: var(--danger);
-      }
-
-      .edit-footer {
-        padding: 12px 16px 16px;
-      }
-
-      /* toast */
-      #toast {
-        position: fixed;
-        left: 16px;
-        right: 16px;
-        bottom: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        font-size: 12px;
-        font-weight: 500;
-        padding: 8px 10px;
-        border-radius: var(--radius-sm);
-        background: var(--text);
-        color: var(--bg);
-        opacity: 0;
-        transform: translateY(4px);
-        transition:
-          opacity 0.15s ease,
-          transform 0.15s ease;
-        pointer-events: none;
-      }
-
-      #toast.show {
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
-      }
-
-      .toast-action {
-        flex-shrink: 0;
-        background: transparent;
-        border: none;
-        color: inherit;
-        font: inherit;
-        font-weight: 700;
-        text-decoration: underline;
-        padding: 0;
-        cursor: pointer;
-      }
-
-      #toast.error {
-        background: var(--danger);
-        color: white;
-      }
+      input:focus, textarea:focus, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+      #toast { position: fixed; right: 16px; bottom: 14px; left: 16px; z-index: 10; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 8px 10px; border-radius: var(--radius-sm); background: var(--text); color: var(--bg); font-size: 12px; font-weight: 500; opacity: 0; transform: translateY(4px); transition: opacity .15s ease, transform .15s ease; pointer-events: none; }
+      #toast.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+      #toast.error { background: var(--danger); color: white; }
+      .toast-action { padding: 0; border: none; background: transparent; color: inherit; font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
     </style>
   </head>
   <body>
     <div id="mainView" class="view">
       <header>
         <div class="brand">
-          <img class="brand-icon" src="icons/header-icon.png" alt="" width="22" height="22" />
+          <img class="brand-icon" src="icons/header-icon.png" alt="" width="24" height="24" />
           <div class="wordmark">
             <span class="wm-dark">Prompt</span><span class="wm-gradient"><span class="wm-i">&#305;<span class="wm-dot"></span></span>fy</span>
             <svg class="wm-spark" viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5 11.3 8.7 18.5 10 11.3 11.3 10 18.5 8.7 11.3 1.5 10 8.7 8.7Z"/></svg>
           </div>
         </div>
-        <button id="manageBtn" class="icon-btn" title="Manage prompts" aria-label="Manage prompts"></button>
+        <div class="header-actions">
+          <button id="searchBtn" class="icon-btn" type="button" title="Search prompts" aria-label="Search prompts"></button>
+          <button id="manageBtn" class="icon-btn" type="button" title="Manage prompts" aria-label="Manage prompts"></button>
+        </div>
       </header>
 
-      <div id="targetToggle" class="segmented"></div>
+      <section id="siteStatus" class="site-status" aria-live="polite">
+        <span class="status-dot"></span>
+        <div class="status-copy">
+          <strong id="statusTitle">Checking this page…</strong>
+          <span id="statusHint">Detecting ChatGPT or Claude.</span>
+        </div>
+      </section>
+
+      <div id="openTargets" class="target-actions hidden">
+        <button type="button" data-url="https://chatgpt.com/">Open ChatGPT</button>
+        <button type="button" data-url="https://claude.ai/new">Open Claude</button>
+      </div>
 
       <div id="searchWrap" class="hidden">
-        <input id="searchInput" type="text" placeholder="Search prompts" />
+        <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg>
+        <input id="searchInput" type="search" placeholder="Search prompts" aria-label="Search prompts" autocomplete="off" />
+        <span class="search-key">/</span>
       </div>
 
       <div id="promptList"></div>
 
       <div id="emptyState" class="hidden">
-        <p>No prompts yet.</p>
-        <button id="emptyAddBtn" class="btn btn-primary" style="width: auto; padding: 8px 14px;">
-          Add your first prompt
-        </button>
+        <p id="emptyMessage">No prompts yet.</p>
+        <button id="emptyAddBtn" class="btn btn-primary" type="button">Add your first prompt</button>
       </div>
 
       <div class="add-row">
-        <button id="addBtn" class="btn btn-ghost">+ Add prompt</button>
+        <button id="addBtn" class="add-link" type="button">+ New prompt</button>
+        <span id="promptCount"></span>
       </div>
     </div>
 
     <div id="editView" class="view hidden">
       <div class="edit-header">
-        <button id="backBtn" class="icon-btn" title="Back" aria-label="Back"></button>
+        <button id="backBtn" class="icon-btn" type="button" title="Back" aria-label="Back"></button>
         <h1>Manage prompts</h1>
+        <div class="edit-header-actions">
+          <button id="backupBtn" class="icon-btn" type="button" title="Backup prompts" aria-label="Backup prompts"></button>
+          <button id="restoreBtn" class="icon-btn" type="button" title="Restore prompts" aria-label="Restore prompts"></button>
+          <input id="restoreInput" type="file" accept="application/json" class="hidden" />
+        </div>
       </div>
-
       <div id="editList"></div>
-
-      <div class="edit-footer" style="display: flex; flex-direction: column; gap: 8px;">
-        <button id="addPromptBtn" class="btn btn-ghost">+ Add prompt</button>
-        <button id="doneBtn" class="btn btn-primary">Done</button>
+      <div class="edit-footer">
+        <button id="addPromptBtn" class="btn btn-ghost" type="button">+ Add prompt</button>
+        <button id="doneBtn" class="btn btn-primary" type="button">Done</button>
       </div>
     </div>
 
-    <div id="toast"></div>
+    <div id="toast" role="status" aria-live="polite"></div>
 
     <script src="paste-logic.js"></script>
     <script src="popup.js"></script>

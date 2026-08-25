@@ -41,21 +41,40 @@ function pasteIntoChat(text) {
     .replace(/\{\{\s*date\s*\}\}/gi, now.toLocaleDateString())
     .replace(/\{\{\s*time\s*\}\}/gi, now.toLocaleTimeString());
 
+  const previousSelection = window.getSelection();
+  const previousEditorRange =
+    previousSelection?.rangeCount > 0 &&
+    el.contains(previousSelection.getRangeAt(0).commonAncestorContainer)
+      ? previousSelection.getRangeAt(0).cloneRange()
+      : null;
+
   el.focus();
 
   if (el.tagName === "TEXTAREA") {
+    const currentText = el.value;
+    const start = el.selectionEnd ?? currentText.length;
+    const nextText =
+      currentText.slice(0, start) + resolvedText + currentText.slice(start);
     const setter = Object.getOwnPropertyDescriptor(
       window.HTMLTextAreaElement.prototype,
       "value"
     ).set;
-    setter.call(el, resolvedText);
+    setter.call(el, nextText);
+    el.setSelectionRange(start + resolvedText.length, start + resolvedText.length);
     el.dispatchEvent(new Event("input", { bubbles: true }));
   } else {
     const selection = window.getSelection();
     const range = document.createRange();
-    range.selectNodeContents(el);
-    selection.removeAllRanges();
-    selection.addRange(range);
+    if (previousEditorRange) {
+      previousEditorRange.collapse(false);
+      selection.removeAllRanges();
+      selection.addRange(previousEditorRange);
+    } else {
+      range.selectNodeContents(el);
+      range.collapse(false);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
 
     const dataTransfer = new DataTransfer();
     dataTransfer.setData("text/plain", resolvedText);
