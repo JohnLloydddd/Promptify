@@ -24,6 +24,8 @@ async function rebuildMenu() {
         "https://claude.ai/*",
         "https://chatgpt.com/*",
         "https://chat.openai.com/*",
+        "https://copilot.microsoft.com/*",
+        "https://m365.cloud.microsoft/chat*",
       ],
     });
   });

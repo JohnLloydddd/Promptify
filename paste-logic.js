@@ -21,6 +21,18 @@ function pasteIntoChat(text) {
       "textarea#prompt-textarea",
       "textarea",
     ],
+    "copilot.microsoft.com": [
+      "#userInput",
+      'textarea[aria-label*="Ask" i]',
+      'div[contenteditable="true"]',
+      "textarea",
+    ],
+    "m365.cloud.microsoft": [
+      "#m365-chat-editor-target-element",
+      '[contenteditable="true"][aria-label*="Copilot" i]',
+      '[contenteditable="true"]',
+      "textarea",
+    ],
   };
   const selectors = selectorsByHost[location.hostname];
   if (!selectors) return { ok: false };
@@ -87,5 +99,65 @@ function pasteIntoChat(text) {
     );
   }
 
+  showConfidentialityReminder();
   return { ok: true };
+
+  // Defined inside pasteIntoChat because executeScript serializes only this
+  // function, so anything it calls has to travel with it.
+  function showConfidentialityReminder() {
+    const REMINDER_ID = "promptify-confidentiality-reminder";
+    document.getElementById(REMINDER_ID)?.remove();
+
+    const box = document.createElement("div");
+    box.id = REMINDER_ID;
+    box.setAttribute("role", "alert");
+    box.style.cssText = [
+      "position:fixed",
+      "top:16px",
+      "right:16px",
+      "z-index:2147483647",
+      "max-width:340px",
+      "padding:12px 36px 12px 14px",
+      "background:#fffbeb",
+      "color:#78350f",
+      "border:1px solid #f59e0b",
+      "border-left:4px solid #f59e0b",
+      "border-radius:8px",
+      "box-shadow:0 4px 16px rgba(0,0,0,0.15)",
+      "font:13px/1.45 system-ui,-apple-system,Segoe UI,sans-serif",
+      "transition:opacity 0.3s",
+    ].join(";");
+
+    const title = document.createElement("div");
+    title.textContent = "⚠️ Before you upload any files";
+    title.style.cssText = "font-weight:600;margin-bottom:4px";
+
+    const body = document.createElement("div");
+    body.textContent =
+      "Remove confidential data from files before uploading them, " +
+      "e.g. names, client details, credentials, and financial or internal-only information.";
+
+    const close = document.createElement("button");
+    close.type = "button";
+    close.textContent = "×";
+    close.setAttribute("aria-label", "Dismiss reminder");
+    close.style.cssText =
+      "position:absolute;top:6px;right:8px;border:none;background:none;" +
+      "color:#78350f;font-size:18px;line-height:1;cursor:pointer;padding:2px 4px";
+
+    const dismiss = () => {
+      box.style.opacity = "0";
+      setTimeout(() => box.remove(), 300);
+    };
+    close.addEventListener("click", dismiss);
+
+    box.append(title, body, close);
+    document.body.appendChild(box);
+
+    let timer = setTimeout(dismiss, 8000);
+    box.addEventListener("mouseenter", () => clearTimeout(timer));
+    box.addEventListener("mouseleave", () => {
+      timer = setTimeout(dismiss, 4000);
+    });
+  }
 }

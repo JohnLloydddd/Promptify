@@ -1,10 +1,10 @@
 # Promptify
 
-A browser extension for saving reusable prompts and inserting them into [Claude.ai](https://claude.ai) or [ChatGPT](https://chatgpt.com) with one click.
+A browser extension for saving reusable prompts and inserting them into [Claude.ai](https://claude.ai), [ChatGPT](https://chatgpt.com), or [Copilot](https://copilot.microsoft.com) with one click.
 
 ## Features
 
-- **One-click insert** — click a saved prompt to paste it directly into the chat box on Claude.ai or ChatGPT. On any other page, it's copied to your clipboard instead.
+- **One-click insert** — click a saved prompt to paste it directly into the chat box on Claude.ai, ChatGPT, or Copilot. On any other page, it's copied to your clipboard instead.
 - **Right-click paste** — insert a prompt from the page's context menu without opening the popup.
 - **Search** — quickly filter prompts by name or text (press `/` to focus search).
 - **Favorites** — star your most-used prompts to pin them to the top of the list.
@@ -31,3 +31,4 @@ A browser extension for saving reusable prompts and inserting them into [Claude.
 
 - claude.ai
 - chatgpt.com / chat.openai.com
+- copilot.microsoft.com (personal accounts) / m365.cloud.microsoft/chat (work accounts)

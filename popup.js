@@ -2,333 +2,758 @@
 // `locked: true`. Locked defaults stay out of Manage Prompts.
 const DEFAULT_PROMPTS = [
   {
-    builtIn: "greeting",
-    name: "Greeting",
-    text: "Hello",
-    favorite: false,
-    locked: true,
-  },
-  {
     builtIn: "rollforward",
     name: "Roll Forward",
-    text: `# FINANCIAL STATEMENT ROLL-FORWARD AND FORMATTING INSTRUCTIONS
-
-Please roll forward the attached Financial Statements from the **2025–2024 comparative period to 2026–2025**.
-
-This is a **financial statement roll-forward task, not a rewriting or accounting-adjustment task**. Preserve the original document as closely as possible.
-
-## 1. Core Roll-Forward Rule
-
-For every applicable comparative financial statement table currently presented as:
-
-| 2025     | 2024     |
-| -------- | -------- |
-| Amount A | Amount B |
-
-Roll it forward to:
-
-| 2026  | 2025     |
-| ----- | -------- |
-| BLANK | Amount A |
-
-Apply the following rule consistently:
-
-**Original 2025 → New comparative 2025**
-**Original 2024 → Remove from the rolled-forward comparative table**
-**New 2026 → Leave genuinely blank**
-
-Do not move the original 2024 amounts into another column.
-
----
-
-## 2. Update Reporting-Year Headings
-
-Change applicable financial statement and note-table reporting headings from:
-
-**2025 / 2024**
-
-to:
-
-**2026 / 2025**
-
-Apply this to:
-
-* Primary financial statements
-* Supporting schedules
-* Note disclosure tables
-* Comparative financial data tables
-* Reporting-period captions where the year change is clearly required
-
-Do **not** perform a global replacement of every occurrence of 2025 or 2024 in the document.
-
----
-
-## 3. Roll Forward Comparative Amounts
-
-For every applicable comparative-period amount:
-
-1. Copy or move the amount currently under **2025** into the new **2025 comparative column**.
-2. Preserve the amount exactly as originally presented.
-3. Clear the new **2026 numeric amount cell** completely.
-4. Remove the old **2024 comparative amount** from that rolled-forward table.
-
-Do not:
-
-* Recalculate amounts
-* Round amounts
-* Change signs
-* Change parentheses
-* Change decimal places
-* Change zeros to dashes
-* Change dashes to zeros
-* Create new amounts
-* Infer missing balances
-* Populate 2026 totals or subtotals
-* Copy the 2025 amount into both 2026 and 2025
-
-Examples:
-
-Original:
-
-| 2025      | 2024      |
-| --------- | --------- |
-| 1,250,000 | 1,100,000 |
-
-Correct:
-
-| 2026  | 2025      |
-| ----- | --------- |
-| BLANK | 1,250,000 |
-
-If the original 2025 amount is:
-
-**(1,250,000)**
-
-the new comparative 2025 amount must remain:
-
-**(1,250,000)**
-
-If the original amount is a dash, preserve the dash in the comparative 2025 column.
-
----
-
-## 4. Formatting of Transferred 2025 Amounts
-
-Every amount transferred from the original 2025 column into the new comparative 2025 column must be formatted in **regular / non-bold font**.
-
-This instruction applies **only to transferred comparative amount entries**.
-
-Do not remove bold formatting from:
-
-* Account titles
-* Line-item descriptions
-* Headings
-* Subheadings
-* Subtotal labels
-* Total labels
-* Note titles
-* Structural text
-* Other elements that were originally bold
-
----
-
-## 5. New 2026 Current-Year Amount Cells
-
-Every new 2026 numeric amount cell must remain **genuinely blank**.
-
-Do not enter:
-
-* 0
-* *
-* N/A
-* Placeholder text
-* Prior-year amounts
-* Formulas producing zero
-* Any other numeric value
-
-The 2026 column heading must remain visible.
-
-### Philippine Peso Formatting
-
-Apply the appropriate **Philippine peso (₱) currency format** to blank 2026 numeric amount cells so that future amounts entered in those cells will display correctly.
-
-If the original financial statements use a **separate currency-symbol column or separately positioned peso sign**, retain or insert **₱** in the designated 2026 symbol position while leaving the related numeric amount cell completely blank.
-
-Do **not** type the ₱ symbol directly into a numeric amount cell if doing so would make that cell nonblank.
-
----
-
-## 6. Preserve Disclosure Wording
-
-Do not rewrite, summarize, polish, shorten, expand, correct, modernize, or paraphrase the disclosures.
-
-Preserve exactly, except where a reporting-period year change is clearly required:
-
-* Account titles
-* Note titles
-* Note numbering
-* Disclosure descriptions
-* Accounting policy wording
-* Narrative paragraphs
-* Table descriptions
-* Subheadings
-* Line-item descriptions
-* Footnotes
-* Note references
-* Cross-references
-
-Do not make grammatical or stylistic corrections during the roll-forward.
-
----
-
-## 7. Preserve Existing Formatting and Layout
-
-Except for the specifically required changes above, preserve the original:
-
-* Fonts
-* Font sizes
-* Bold
-* Italics
-* Underlining
-* Indentation
-* Paragraph spacing
-* Table widths
-* Column widths
-* Row heights
-* Borders
-* Shading
-* Alignment
-* Number formats
-* Currency presentation
-* Parentheses
-* Decimal places
-* Dashes
-* Page breaks
-* Headers
-* Footers
-* Table positioning
-* Single underlines
-* Double underlines
-* Note numbering
-
-The rolled-forward document should visually match the original as closely as possible.
-
----
-
-## 8. Preserve Structural Elements
-
-Do not delete any structural content merely because the 2026 amount column is blank.
-
-Retain:
-
-* All financial statement sections
-* Notes
-* Tables
-* Rows
-* Account descriptions
-* Subtotals
-* Total rows
-* Percentage rows
-* Section headings
-* Supporting schedules
-* Note references
-* Borders
-* Underlines
-* Double underlines
-
----
-
-## 9. Years Appearing in Narrative Disclosures
-
-Use judgment when reviewing years inside narrative text.
-
-Update a year only when it **clearly represents the reporting period being rolled forward**.
-
-Do not automatically change historical years relating to:
-
-* Incorporation
-* Acquisitions
-* Contracts
-* Lease commencement
-* Loan origination
-* Loan maturity
-* Tax years
-* Registration
-* Standards adoption
-* Historical transactions
-* Prior events
-* Fixed contractual dates
-
-Example:
-
-> "The Company entered into the agreement in 2024."
-
-If 2024 is the actual historical agreement date, leave it as **2024**.
-
-If the correct treatment cannot be determined from the document, **preserve the original wording and flag the item FOR MANUAL REVIEW**.
-
----
-
-## 10. Non-Monetary Numbers
-
-Do not roll forward or alter numbers simply because they appear near a year.
-
-Do not unintentionally change:
-
-* Note numbers
-* Paragraph numbers
-* PFRS numbers
-* PAS numbers
-* IFRS numbers
-* Republic Act numbers
-* Revenue Regulation numbers
-* Contract numbers
-* Registration numbers
-* Addresses
-* Percentage rates
-* Share quantities
-* Reference numbers
-* Historical dates
-* Fixed contractual terms
-
-Only roll forward values that clearly belong to comparative financial statement periods.
-
----
-
-## 11. Ambiguous Items
-
-If an item is ambiguous and it is unclear whether it should be changed:
-
-1. Preserve the original content.
-2. Do not make an unsupported assumption.
-3. Flag the item as:
-
-**FOR MANUAL REVIEW**
-
-Briefly explain why the treatment is uncertain.
-
----
-
-## 12. Final Quality-Control Check
-
-Before completing the document, verify that:
-
-* All applicable 2025–2024 headings are now 2026–2025.
-* Every applicable original 2025 amount appears in the new comparative 2025 column.
-* Transferred 2025 comparative amounts exactly match the original figures.
-* Transferred 2025 amounts are regular / non-bold.
-* Every applicable 2026 numeric amount cell is genuinely blank.
-* No zero, dash, N/A, placeholder, or copied amount appears in a 2026 numeric cell.
-* The appropriate ₱ formatting or symbol position is present for 2026.
-* Old 2024 comparative amounts have been removed from rolled-forward tables.
-* Historical 2024 or 2025 dates were not changed without justification.
-* Disclosure wording was not unintentionally modified.
-* No rows, tables, notes, schedules, or sections were deleted.
-* Original formatting and layout were preserved except for the expressly required changes.
-
-### Overriding Rule
-
-When in doubt, **preserve the original document rather than making an unsupported change** and flag the item **FOR MANUAL REVIEW**.
+    text: `FINANCIAL STATEMENT ROLL-FORWARD PROMPT 
+
+ 
+Roll forward the attached financial statements from the 2025–2024 reporting period to the 2026–2025 reporting period. 
+The objective is to prepare the financial statements for 2026 while preserving the existing wording, presentation, structure, and formatting. 
+This is a financial-statement roll-forward task, not a rewriting, recalculation, or accounting-adjustment task. 
+1. Reporting-year definitions 
+For this roll-forward: 
+• New current year: 2026 
+• Most recent comparative year: 2025 
+• Second comparative year, where a three-year presentation is used: 2024 
+• Oldest year to remove from a three-year presentation: 2023 
+Apply these year mappings only when the years clearly represent financial-reporting periods. 
+Do not automatically change historical, contractual, acquisition, maturity, incorporation, tax, regulatory, or other fixed dates. 
+2. General hierarchy of instructions 
+Apply the instructions in the following order: 
+1. Apply the special rules for statements of changes in equity and similar current-year movement schedules in Section 5. 
+2. Apply the special rules for PPE, investment property, and similar schedules in Section 4. 
+3. Apply the ordinary two-year and three-year table rules in Sections 3 and 4. 
+4. Preserve historical and fixed dates in accordance with Section 10. 
+5. If a table remains genuinely ambiguous, preserve it and identify it for review. 
+The special rules for equity and similar movement schedules override the general instruction to transfer prior-year amounts. 
+3. Ordinary two-year tables 
+For every ordinary table currently presenting two reporting years, apply the following mapping: 
+Existing presentation Rolled-forward presentation 
+2025 2026 
+2024 2025 
+Old 2025 amount New 2025 comparative amount 
+Old 2024 amount Remove 
+New 2026 amount Leave genuinely blank 
+Required treatment 
+• Change the reporting-year headings from 2025–2024 to 2026–2025. 
+• Transfer each exact old 2025 amount to the corresponding new 2025 comparative position. 
+• Remove the old 2024 amounts from that two-year table. 
+• Leave every new 2026 monetary or numeric amount cell genuinely blank. 
+• Do not enter zero, a dash, N/A, a placeholder, an underscore, or a copied amount in a new 2026 numeric cell. 
+• Do not leave an old 2025 amount in the same physical column after changing that column heading to 2026. 
+• Verify the mapping by row and account description, not merely by column position. 
+Illustration 
+Before roll-forward 
+Account 2025 2024 
+Sample account 1,000 800 
+After roll-forward 
+Account 2026 2025 
+Sample account 1,000 
+4. Ordinary three-year tables 
+Do not skip, collapse, or leave unchanged any table that presents three reporting years. 
+Apply the following mapping: 
+Existing presentation Rolled-forward presentation 
+2025 2026 
+2024 2025 
+2023 2024 
+Old 2025 amount New 2025 comparative amount 
+Old 2024 amount New 2024 comparative amount 
+Old 2023 amount Remove 
+New 2026 amount Leave genuinely blank 
+Required treatment 
+• Add or establish the new 2026 current-year period. 
+• Retain the two most recent existing comparative periods: 2025 and 2024. 
+• Keep every amount associated with its correct reporting year: 
+o Old 2025 amounts remain associated with 2025. 
+o Old 2024 amounts remain associated with 2024. 
+• Remove the old 2023 period and its amounts. 
+• Keep the table as a three-year table. 
+• Leave every new 2026 monetary or numeric amount cell genuinely blank. 
+• Do not reduce a three-year table to a two-year table. 
+• Do not merely rename the headings while leaving the amounts under the wrong years. 
+Illustration 
+Before roll-forward 
+Account 2025 2024 2023 
+Sample account 1,000 800 600 
+After roll-forward 
+Account 2026 2025 2024 
+Sample account 1,000 800 
+Apply this rule whether the reporting periods are presented: 
+• Horizontally as column headings 
+• Vertically as row headings 
+• In separate year blocks 
+• In repeated subtables or schedules 
+• In merged cells 
+• In multilevel table headings 
+• On different pages within the same note 
+5. Statements of changes in equity and similar movement schedules 
+This section is a mandatory exception to the general amount-transfer rules. 
+Apply this special treatment to: 
+• Statements of changes in equity 
+• Retained earnings movement schedules 
+• Share capital movement schedules 
+• Appropriation or reserve movement schedules 
+• Dividends movement schedules 
+• Equity reconciliation tables 
+• Other similar schedules presenting movements for a single reporting period 
+Required treatment 
+For a current-year equity or similar movement schedule: 
+1. Roll the reporting period forward from 2025 to 2026. 
+2. Update applicable current-year dates, including: 
+o January 1, 2025 → January 1, 2026 
+o December 31, 2025 → December 31, 2026 
+o For the year ended December 31, 2025 → For the year ended December 31, 2026 
+3. Preserve all account headings, equity categories, movement descriptions, rows, columns, totals, borders, and underlines. 
+4. Leave all monetary amount cells for the new 2026 movement schedule genuinely blank. 
+5. Do not copy, transfer, duplicate, or carry forward the old 2025 amounts into the new 2026 monetary cells. 
+6. Do not automatically use the old December 31, 2025 closing balance as the January 1, 2026 opening balance. 
+7. Do not calculate or create a new opening balance. 
+8. Do not retain old 2025 profit, loss, dividends, contributions, withdrawals, appropriations, transfers, issuances, or other movements in the new 2026 schedule. 
+9. Do not enter zero, a dash, N/A, a placeholder, or an estimated amount in any new 2026 monetary cell. 
+Illustration 
+Before roll-forward 
+Movement Share capital Retained earnings Total equity 
+Balance at January 1, 2025 1,000 500 1,500 
+Profit for 2025 — 200 200 
+Balance at December 31, 2025 1,000 700 1,700 
+After roll-forward 
+Movement Share capital Retained earnings Total equity 
+Balance at January 1, 2026  
+Profit for 2026  
+Balance at December 31, 2026  
+The old 2025 amounts must not be copied into the new 2026 equity movement schedule. 
+Important distinction 
+This special rule applies to current-year movement and reconciliation schedules. 
+If an equity note contains a separate ordinary two-year balance table presenting 2025 and 2024 balances, apply the ordinary two-year rule in Section 3 unless that table is itself a movement schedule. 
+6. PPE, investment property, and similar movement schedules 
+Apply the roll-forward rules to all detailed movement and reconciliation schedules, including: 
+• Property, plant and equipment 
+• Investment property 
+• Right-of-use assets 
+• Intangible assets 
+• Accumulated depreciation or amortization 
+• Asset revaluation schedules 
+• Construction in progress 
+• Financial investments 
+• Loans and receivables 
+• Borrowings 
+• Lease liabilities 
+• Deferred tax accounts 
+• Provisions 
+• Other notes or schedules using the same multi-year structure 
+Do not skip these tables merely because they contain: 
+• Several asset classes 
+• Numerous monetary columns 
+• Opening and closing balances 
+• Additions 
+• Disposals 
+• Transfers 
+• Depreciation or amortization 
+• Impairment or revaluation 
+• Separate cost and accumulated depreciation sections 
+• Repeated year headings 
+• Two or three years of amounts 
+• Merged cells or multilevel headings 
+Three-year movement schedules 
+For a three-year PPE or similar schedule: 
+1. Establish the new 2026 period using the same table structure. 
+2. Keep all 2026 monetary cells genuinely blank. 
+3. Retain the complete old 2025 period as the 2025 comparative period. 
+4. Retain the complete old 2024 period as the 2024 comparative period. 
+5. Remove the old 2023 period and its amounts. 
+6. Preserve every asset-category heading, movement description, total, subtotal, border, and underline. 
+7. Apply the mapping to every monetary row, not only to opening and closing balances. 
+Two-year movement schedules 
+For a two-year PPE or similar schedule: 
+1. Establish the new 2026 period using the existing table structure. 
+2. Keep all 2026 monetary cells genuinely blank. 
+3. Retain the complete old 2025 period as the new 2025 comparative period. 
+4. Remove the old 2024 period and its amounts. 
+5. Apply the mapping to every monetary row. 
+Do not apply the equity exception in Section 5 to PPE, investment property, intangible assets, depreciation, amortization, or similar asset and liability schedules. 
+7. Comparative-amount formatting 
+Every monetary or numeric amount transferred from a previous year must appear as regular, non-bold text. 
+The Philippine peso sign associated with a transferred comparative amount must also be regular and non-bold. 
+This requirement applies whether the peso sign: 
+• Appears in the same cell as the comparative amount 
+• Appears in a separate currency-symbol column 
+• Is attached directly to the amount 
+• Is repeated before a subtotal, total, opening balance, or closing balance 
+For every transferred comparative figure: 
+• The amount must be regular and non-bold. 
+• The related ₱ sign must be regular and non-bold. 
+• Do not copy bold formatting from the old current-year amount or peso sign. 
+• If the source amount and peso sign were bold, remove bold formatting from both when transferring them to the comparative-year position. 
+This requirement applies to: 
+• Individual account amounts 
+• Subtotal amounts 
+• Total amounts 
+• Opening and closing balances 
+• Comparative figures in the primary financial statements 
+• Comparative figures in the notes 
+• Comparative figures in PPE and other movement schedules 
+• Comparative percentages, ratios, and per-share amounts, where applicable 
+• Both retained comparative years in a three-year table 
+Bold-formatting distinction 
+• Transferred comparative monetary and numeric figures: regular and non-bold 
+• Peso signs associated with transferred comparative figures: regular and non-bold 
+• Account titles and account names: preserve existing formatting 
+• Row descriptions: preserve existing formatting 
+• Headings and year headings: preserve existing formatting 
+• Subtotal and total labels: preserve existing formatting 
+• Note titles and section titles: preserve existing formatting 
+A subtotal or total label may remain bold, but its transferred comparative amount and the related peso sign must both be regular and non-bold. 
+When transferring an amount, copy its exact value and applicable number format without copying the source cell’s bold formatting. 
+8. Amount handling 
+When retaining or transferring an amount: 
+• Preserve its exact numeric value. 
+• Preserve commas, decimal places, parentheses, dashes, percentage signs, ratios, and other number presentation. 
+• Do not recalculate, round, adjust, combine, infer, or create an amount. 
+• Do not change formulas or relationships between balances unless specifically instructed. 
+• Do not move an amount based only on visual proximity. 
+• Match the amount using its account title, row description, reporting year, and table structure. 
+• Ensure that no amount is placed under the wrong reporting year. 
+• Apply the non-bold rule in Section 7 to every transferred comparative amount. 
+9. Blank 2026 cells and peso formatting 
+All new 2026 monetary and numeric amount cells must be genuinely blank and ready for data entry. 
+Do not place any of the following in a new 2026 numeric cell: 
+• Zero 
+• A dash 
+• N/A 
+• An underscore 
+• A numeric placeholder 
+• A copied prior-year amount 
+• A formula returning zero 
+• A space intended to imitate a blank amount 
+• A typed peso sign inside the numeric amount cell 
+Preserve or apply the appropriate Philippine peso currency-number format to the blank 2026 numeric cells. 
+If the original table uses a separate currency-symbol column: 
+• Retain or insert the ₱ sign in the designated currency-symbol position. 
+• Leave the corresponding numeric amount cell genuinely blank. 
+A peso sign in a separate designated currency-symbol cell is permitted. A peso sign must not be typed into the blank numeric amount cell itself. 
+10. Narrative years and narrative amounts 
+Change a year in narrative text only when it clearly represents a reporting period being rolled forward. 
+For narrative disclosures containing comparative reporting-period amounts: 
+• Change the reporting years from 2025 and 2024 to 2026 and 2025. 
+• Leave the new 2026 amount blank. 
+• Transfer the old 2025 amount as the new 2025 comparative amount. 
+• Remove the old 2024 comparative amount from that sentence. 
+• Keep the wording unchanged except for the necessary year-and-amount roll-forward. 
+• Format the retained 2025 comparative amount as regular, non-bold text. 
+Illustration 
+Before 
+Depreciation expense amounted to ₱100,000 in 2025 and ₱80,000 in 2024. 
+After 
+Depreciation expense amounted to ₱________ in 2026 and ₱100,000 in 2025. 
+Do not automatically change: 
+• Historical dates 
+• Contract dates 
+• Maturity dates 
+• Acquisition dates 
+• Incorporation dates 
+• Lease commencement dates 
+• Standards-adoption dates 
+• Taxable years 
+• Regulatory filing dates 
+• Note or paragraph numbers 
+• PFRS, PAS, or IFRS numbers 
+• Registration or contract numbers 
+• Addresses 
+• Fixed contractual terms 
+11. Preserve disclosures and structure 
+Do not rewrite, summarize, improve, shorten, or expand the disclosures. 
+Preserve: 
+• Disclosure wording 
+• Accounting policies 
+• Account and note titles 
+• Line-item descriptions 
+• Note numbers and references 
+• Cross-references 
+• Footnotes 
+• Rows and columns 
+• Asset classifications 
+• Subtotals and totals 
+• Percentage and ratio rows 
+• Table borders and underlines 
+• Headers and footers 
+• Page layout and page breaks 
+Do not delete structural rows merely because the new 2026 amount cells are blank. 
+Do not remove an account, movement row, subtotal, or total solely because it has no 2026 amount. 
+12. Preserve formatting 
+Except for the required year, amount, comparative-font, and peso-format changes, preserve: 
+• Fonts and font sizes 
+• Bold, italic, and underline formatting 
+• Indentation and paragraph spacing 
+• Table, column, and row dimensions 
+• Borders and shading 
+• Alignment 
+• Number formats 
+• Parentheses and decimal places 
+• Table positioning 
+• Headers and footers 
+• Page layout and page breaks 
+The rolled-forward document should visually match the source document. 
+The instruction to preserve formatting does not override the requirement that all transferred comparative amounts be regular and non-bold. 
+13. Mandatory quality-control review 
+Before completing the document, inspect every page, table, schedule, note, and narrative disclosure. 
+Confirm that: 
+• Every applicable two-year table was rolled from 2025–2024 to 2026–2025. 
+• Every applicable three-year table was rolled from 2025–2024–2023 to 2026–2025–2024. 
+• No applicable three-year table was skipped or reduced to two years. 
+• All PPE, investment property, intangible-asset, and similar schedules were rolled forward. 
+• Every movement row in the applicable schedules was addressed. 
+• The complete old 2025 amounts are presented under 2025 in ordinary comparative tables. 
+• The complete old 2024 amounts are presented under 2024 in applicable three-year tables. 
+• Old 2023 amounts were removed from applicable three-year tables. 
+• All new 2026 monetary and numeric cells are genuinely blank. 
+• No amount was placed under the wrong year. 
+• No zero, dash, N/A, underscore, formula, or placeholder was entered for 2026. 
+• All transferred comparative amounts are regular and non-bold. 
+• Bold formatting remains on account titles, row descriptions, headings, and subtotal or total labels where originally applicable. 
+• Peso formatting was applied appropriately to blank 2026 numeric cells. 
+• Statements of changes in equity and similar current-year movement schedules were rolled to 2026 without copying old 2025 monetary amounts. 
+• All 2026 monetary cells in equity and similar movement schedules are blank. 
+• No table, row, account, note, schedule, or disclosure was unintentionally deleted. 
+• Narrative reporting periods and narrative amounts were rolled forward where applicable. 
+• Historical dates and non-reporting-period numbers were not incorrectly changed. 
+• Headers, footers, page breaks, borders, underlines, alignment, and table dimensions remain consistent with the source document. 
+• The complete document was rendered or visually inspected to identify clipping, overlap, broken tables, incorrect page breaks, or missing content. 
+14. Final instruction 
+This is a financial-statement roll-forward task, not a rewriting, recalculation, or accounting-adjustment task. 
+Do not use ambiguity as a reason to skip an entire table, note, or schedule. 
+If an individual item remains genuinely ambiguous after applying all instructions: 
+1. Preserve the item. 
+2. Do not invent or transfer an amount. 
+3. Identify the specific item, table, note, and page for review. 
+4. Continue processing all other unambiguous items. 
+ 
+ 
+ 
+FINANCIAL STATEMENT ROLL-FORWARD QUALITY CHECKING PROMPT 
+Please perform a detailed quality-control review of the rolled-forward Financial Statements. 
+The original Financial Statements were prepared on a 2025–2024 comparative basis and were rolled forward to 2026–2025. 
+Your task is to CHECK ONLY. Do not rewrite, reformat, recalculate, or make unsupported changes to the Financial Statements unless specifically instructed. 
+The expected roll-forward result is: 
+Original: 
+| 2025 | 2024 | 
+| Amount A | Amount B | 
+Rolled Forward: 
+| 2026 | 2025 | 
+| BLANK | Amount A | 
+The old 2025 amount should become the new comparative 2025 amount, while the new 2026 current-year amount column should remain blank. 
+Perform the following checks: 
+1. CHECK REPORTING YEAR HEADINGS 
+Review all financial statement tables, schedules, and note disclosure tables. 
+Confirm that applicable comparative headings have been properly changed from: 
+2025 – 2024 
+to: 
+2026 – 2025 
+Flag any table that still incorrectly shows: 
+• 2025 – 2024 
+• 2024 as the comparative-year column 
+• 2025 as the current-year column when it should now be 2026 
+Do not flag historical years appearing in narrative disclosures unless they clearly represent reporting-period headings that should have been rolled forward. 
+2. CHECK THE 2025 COMPARATIVE AMOUNTS 
+Compare the original Financial Statements against the rolled-forward version. 
+For every applicable table, verify that: 
+Original 2025 amount = Rolled-forward 2025 amount 
+Check every amount line by line. 
+The amount must be transferred exactly without: 
+• Recalculation 
+• Rounding 
+• Changing signs 
+• Dropping parentheses 
+• Changing decimal places 
+• Changing currency presentation 
+• Changing a dash to zero 
+• Changing zero to a dash 
+• Altering the amount in any way 
+Example: 
+Original: 
+2025 = 1,250,000 
+2024 = 1,100,000 
+Correct rolled-forward result: 
+2026 = BLANK 
+2025 = 1,250,000 
+Incorrect examples: 
+2026 = 1,250,000 
+2025 = 1,100,000 
+or 
+2026 = BLANK 
+2025 = 1,100,000 
+or 
+2026 = BLANK 
+2025 = 1,250 
+Flag every discrepancy. 
+3. CHECK THAT THE 2026 AMOUNT COLUMN IS BLANK 
+Review every applicable 2026 current-year amount cell. 
+The 2026 amount cells should be genuinely blank and ready for entry of the new current-year balances. 
+Flag any 2026 amount cell containing: 
+• A copied 2025 amount 
+• An old 2024 amount 
+• Zero 
+• A dash 
+• N/A 
+• Placeholder text 
+• Any other amount or value 
+Do not flag the 2026 column heading itself. 
+Also do not flag non-amount information that legitimately belongs in the table structure. 
+4. CHECK FOR OLD 2024 AMOUNTS 
+Verify that old 2024 comparative amounts have been removed from tables that were rolled forward to 2026–2025. 
+Flag any old 2024 amount that appears to have remained in the new comparative table by mistake. 
+However, do NOT flag a 2024 amount or date if it legitimately belongs to: 
+• Historical disclosures 
+• Contract information 
+• Acquisition information 
+• Prior-year transaction descriptions 
+• Maturity schedules 
+• Tax disclosures 
+• Historical comparative discussions 
+• Other disclosures where 2024 remains factually relevant 
+Use context before flagging a 2024 reference. 
+5. CHECK FOR ACCIDENTAL DUPLICATION 
+Check whether the original 2025 amount was accidentally copied into both the 2026 and 2025 columns. 
+Example of an error: 
+| 2026 | 2025 | 
+| 1,250,000 | 1,250,000 | 
+The correct result should be: 
+| 2026 | 2025 | 
+| BLANK | 1,250,000 | 
+Flag every duplicated amount of this type. 
+6. CHECK DISCLOSURE WORDING 
+Compare the original and rolled-forward Financial Statements. 
+Confirm that disclosure wording has not been unnecessarily rewritten, summarized, shortened, expanded, polished, or paraphrased. 
+Check for unintended changes to: 
+• Account titles 
+• Disclosure descriptions 
+• Note headings 
+• Accounting policies 
+• Narrative paragraphs 
+• Table descriptions 
+• Line-item descriptions 
+• Footnotes 
+• Note references 
+• Cross-references 
+Only reporting-period changes that were necessary for the roll-forward should have been made. 
+Flag any wording difference that does not appear necessary for the roll-forward. 
+7. CHECK HISTORICAL DATES AND YEARS 
+Review changes involving years appearing within narrative disclosures. 
+Ensure that the roll-forward process did NOT automatically change historical years. 
+Pay particular attention to: 
+• Incorporation dates 
+• Acquisition dates 
+• Contract dates 
+• Lease commencement dates 
+• Loan dates 
+• Maturity dates 
+• Tax years 
+• Registration dates 
+• Standards adoption dates 
+• Historical transactions 
+Example: 
+Original disclosure: 
+"The Company entered into the agreement in 2024." 
+If 2024 is the actual historical date of the agreement, it should normally remain 2024. 
+Flag cases where historical dates appear to have been changed simply because of the financial statement roll-forward. 
+8. CHECK NON-MONETARY NUMBERS 
+Ensure that the roll-forward did not accidentally alter numbers that are not comparative financial amounts. 
+Check items including: 
+• Note numbers 
+• Paragraph numbers 
+• PFRS numbers 
+• PAS numbers 
+• IFRS numbers 
+• Contract numbers 
+• Registration numbers 
+• Addresses 
+• Percentage rates 
+• Share quantities 
+• Dates 
+• Reference numbers 
+Flag suspicious changes. 
+9. CHECK STRUCTURE AND COMPLETENESS 
+Compare the original and rolled-forward versions to ensure that no structural content was accidentally removed. 
+Confirm preservation of: 
+• All financial statement sections 
+• Notes 
+• Tables 
+• Rows 
+• Account descriptions 
+• Subtotals 
+• Total rows 
+• Section headings 
+• Note references 
+• Percentage rows 
+• Supporting schedules 
+Flag any missing row, note, table, section, or disclosure. 
+10. CHECK FORMATTING 
+Check whether the rolled-forward Financial Statements preserve the original presentation. 
+Look for unintended changes to: 
+• Fonts 
+• Font sizes 
+• Bold 
+• Italics 
+• Underlining 
+• Indentation 
+• Paragraph spacing 
+• Table widths 
+• Column widths 
+• Row heights 
+• Borders 
+• Shading 
+• Alignment 
+• Number formats 
+• Currency symbols 
+• Parentheses 
+• Decimal places 
+• Dashes 
+• Page breaks 
+• Headers 
+• Footers 
+• Table positioning 
+• Single and double underlines 
+Flag formatting inconsistencies introduced during the roll-forward. 
+11. CHECK TOTALS AND SUBTOTALS 
+Because the 2026 current-year amount column is intentionally blank, do NOT attempt to calculate or populate 2026 totals or subtotals. 
+For the comparative 2025 column, verify that rolled-forward totals and subtotals match the amounts that appeared under 2025 in the original Financial Statements. 
+Do not recalculate or overwrite figures unless specifically requested. 
+If an apparent mathematical inconsistency already existed in the original 2025 amounts, flag it separately rather than silently correcting it. 
+12. PERFORM A FINAL LINE-BY-LINE CHECK 
+Conduct a final review using this core rule: 
+ORIGINAL 2025 → NEW 2025 
+ORIGINAL 2024 → REMOVED FROM THE ROLLED-FORWARD COMPARATIVE TABLE 
+NEW 2026 → BLANK 
+For each applicable table, verify that this rule was followed consistently. 
+OUTPUT FORMAT 
+After completing the review, provide a Quality Control Report. 
+For every issue found, identify: 
+Page / Note / Section: 
+Specify where the issue appears. 
+Account / Line Item: 
+Identify the affected row or disclosure. 
+Type of Issue: 
+Examples: 
+• Incorrect year heading 
+• Incorrect comparative amount 
+• 2026 amount not blank 
+• Old 2024 amount retained 
+• Duplicate amount 
+• Disclosure wording changed 
+• Historical date incorrectly changed 
+• Formatting changed 
+• Missing row/table/disclosure 
+• Non-monetary number changed 
+• Other roll-forward issue 
+Original: 
+Show the relevant original information. 
+Rolled-Forward Version: 
+Show what currently appears. 
+Expected Result: 
+State what the correct rolled-forward presentation should be. 
+Recommended Action: 
+Explain the specific correction required. 
+Do NOT make assumptions when the correct treatment is uncertain. Mark uncertain items as: 
+FOR MANUAL REVIEW 
+At the end of the report, provide a summary showing: 
+• Total issues identified 
+• Number of incorrect comparative amounts 
+• Number of non-blank 2026 amount cells 
+• Number of incorrect year headings 
+• Number of disclosure/text changes 
+• Number of formatting issues 
+• Number of items requiring manual review 
+If no issues are identified, state: 
+"No roll-forward exceptions identified based on the checks performed." 
+IMPORTANT: 
+This is a QUALITY-CONTROL AND EXCEPTION-CHECKING TASK. 
+Do not polish or rewrite the Financial Statements. 
+Do not populate the 2026 amounts. 
+Do not recalculate amounts. 
+Do not automatically correct ambiguous items. 
+The primary objective is to identify any differences that violate the intended 2025–2024 to 2026–2025 financial statement roll-forward process. 
+2.0 
+ 
+Yes — definitely. I’d make that a hard scope restriction at the very beginning so the Excel agent doesn’t accidentally modify other sheets. 
+You can replace the beginning of the prompt with this, or add it as a prominent section: 
+EXCEL FINANCIAL STATEMENT ROLL-FORWARD — FS AND NTFS SHEETS ONLY 
+🚨 CRITICAL SCOPE RESTRICTION — READ FIRST 
+ONLY TWO WORKSHEETS ARE TO BE ROLLED FORWARD: 
+1. FS 
+2. NTFS 
+The roll-forward must be performed ONLY on the Excel worksheets named FS and NTFS. 
+DO NOT ROLL FORWARD ANY OTHER WORKSHEET 
+All other worksheets in the Excel workbook are OUT OF SCOPE and must remain completely unchanged. 
+Do NOT modify, update, move, delete, insert, clear, reformat, rename, or otherwise alter any data in worksheets other than: 
+• FS 
+• NTFS 
+This includes, but is not limited to: 
+• Supporting schedules 
+• Working papers 
+• Calculations 
+• General ledger sheets 
+• Trial balance sheets 
+• Tax sheets 
+• Other financial schedules 
+• Reference sheets 
+• Data sheets 
+• Supporting documentation 
+• Any hidden worksheets 
+• Any other worksheet that is not named exactly FS or NTFS 
+The only permitted workbook changes are changes required to roll forward the FS and NTFS worksheets from 2025–2024 to 2026–2025. 
+________________________________________ 
+1. WORKSHEETS TO PROCESS 
+Before making any changes, locate the worksheets with the exact names: 
+• FS 
+• NTFS 
+Process only these two worksheets. 
+FS WORKSHEET 
+Roll forward the financial statement tables contained in the FS worksheet. 
+NTFS WORKSHEET 
+Roll forward the financial statement-related tables contained in the NTFS worksheet. 
+ALL OTHER WORKSHEETS 
+Leave completely unchanged. 
+Do not perform any year replacement, amount movement, blanking, formatting change, formula change, or structural change on any other worksheet. 
+________________________________________ 
+2. REQUIRED ROLL-FORWARD 
+Within FS and NTFS only, identify applicable tables currently showing: 
+2025 2024 
+Amount A Amount B 
+Convert them to: 
+2026 2025 
+BLANK Amount A 
+The core rule is: 
+OLD 2025 AMOUNT → NEW 2025 COMPARATIVE COLUMN 
+NEW 2026 AMOUNT → BLANK 
+OLD 2024 AMOUNT → REMOVE FROM THE ROLLED-FORWARD COMPARATIVE TABLE 
+________________________________________ 
+3. DO NOT TOUCH OTHER SHEETS 
+This rule overrides all other instructions. 
+For example, if the workbook contains: 
+• FS 
+• NTFS 
+• TB 
+• GL 
+• Schedules 
+• Tax 
+• Working 
+• Data 
+Only FS and NTFS may be changed. 
+The TB, GL, Schedules, Tax, Working, Data, and all other sheets must remain exactly as they were. 
+Even if those worksheets contain 2025 or 2024 columns, DO NOT ROLL THEM FORWARD. 
+________________________________________ 
+4. YEAR HEADINGS — FS AND NTFS ONLY 
+Within the FS and NTFS worksheets, update applicable reporting-period headings: 
+2025 | 2024 
+to: 
+2026 | 2025 
+Do not automatically replace every occurrence of 2025 or 2024. 
+Only update years that clearly represent the applicable financial reporting periods. 
+Historical dates, contract dates, acquisition dates, maturity dates, tax years, note numbers, reference numbers, and other non-reporting-period years must remain unchanged. 
+________________________________________ 
+5. AMOUNT MOVEMENT — FS AND NTFS ONLY 
+For every applicable comparative financial statement table in FS and NTFS: 
+Original 
+Account 2025 2024 
+Cash 1,250,000 1,100,000 
+Receivables 500,000 450,000 
+Correct rolled-forward result 
+Account 2026 2025 
+Cash BLANK 1,250,000 
+Receivables BLANK 500,000 
+The old 2025 amounts must be transferred exactly into the new 2025 comparative column. 
+The new 2026 amount cells must remain genuinely blank. 
+________________________________________ 
+6. NEW 2026 COLUMN 
+Where required in the FS and NTFS worksheets, create or insert the new 2026 current-year column so that the reporting columns become: 
+2026 | 2025 
+The new 2026 amount cells must contain: 
+NO AMOUNT 
+Do not enter: 
+• 0 
+• "-" 
+• N/A 
+• Placeholder values 
+• Old 2025 amounts 
+• Old 2024 amounts 
+• Estimated amounts 
+• Calculated amounts 
+The cells should be blank and ready for future 2026 data entry. 
+Preserve the appropriate existing number/currency formatting for those blank cells. 
+________________________________________ 
+7. PRESERVE FORMATTING 
+Only modify the formatting necessary for the roll-forward within FS and NTFS. 
+Preserve: 
+• Fonts 
+• Font sizes 
+• Bold/italic/underline 
+• Borders 
+• Shading 
+• Alignment 
+• Column widths 
+• Row heights 
+• Number formats 
+• Currency formats 
+• Decimal places 
+• Parentheses 
+• Dashes 
+• Merged cells 
+• Page layout 
+• Print settings 
+• Headers 
+• Footers 
+• Freeze panes 
+• Other existing formatting 
+The FS and NTFS worksheets should look substantially identical to the original except for the required year and amount roll-forward changes. 
+________________________________________ 
+8. PRESERVE ALL OTHER WORKSHEETS EXACTLY 
+After completing the roll-forward, verify that every worksheet other than FS and NTFS remains unchanged. 
+Specifically verify that no changes were made to: 
+• Values 
+• Formulas 
+• Formatting 
+• Row/column structure 
+• Sheet names 
+• Hidden status 
+• Merged cells 
+• Column widths 
+• Row heights 
+• Page setup 
+This is a critical quality-control requirement. 
+________________________________________ 
+9. FINAL QUALITY CONTROL 
+Perform a final check specifically confirming: 
+FS 
+• FS was rolled forward from 2025–2024 to 2026–2025. 
+• Old 2025 amounts are now under new 2025. 
+• New 2026 amount cells are blank. 
+• Old 2024 comparative amounts were removed where appropriate. 
+• No duplicate 2025 amounts exist in both columns. 
+• Formulas and formatting were preserved. 
+NTFS 
+Perform the exact same checks for NTFS. 
+ALL OTHER SHEETS 
+Confirm: 
+NO ROLL-FORWARD WAS PERFORMED. 
+No other worksheet should have been changed. 
+________________________________________ 
+10. FINAL OVERRIDING RULE 
+ONLY FS AND NTFS ARE IN SCOPE. 
+DO NOT MODIFY ANY OTHER WORKSHEET. 
+The required transformation within FS and NTFS is: 
+2025 | 2024 
+→ 
+2026 | 2025 
+with: 
+2026 = BLANK 
+and: 
+2025 = ORIGINAL 2025 AMOUNT 
+Do not populate the new 2026 amounts. 
+Do not recalculate amounts. 
+Do not invent amounts. 
+Do not change historical information. 
+Do not rewrite disclosures. 
+Do not modify any worksheet other than FS and NTFS. 
+If there is any uncertainty within FS or NTFS, flag it for FOR MANUAL REVIEW rather than making an unsupported assumption. 
 `,
     favorite: false,
     locked: true,
@@ -343,6 +768,10 @@ const TARGETS = {
   chatgpt: {
     label: "ChatGPT",
     urlPrefixes: ["https://chatgpt.com/", "https://chat.openai.com/"],
+  },
+  copilot: {
+    label: "Copilot",
+    urlPrefixes: ["https://copilot.microsoft.com/", "https://m365.cloud.microsoft/chat"],
   },
 };
 
