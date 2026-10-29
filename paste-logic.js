@@ -88,8 +88,25 @@ function pasteIntoChat(text) {
       selection.addRange(range);
     }
 
+    // Hold Shift around the paste, like Ctrl+Shift+V: ProseMirror-based
+    // editors (ChatGPT) then treat it as a plain-text paste instead of
+    // turning long text into a "Pasted text" file attachment.
+    const shiftEvent = (type) => {
+      const event = new KeyboardEvent(type, {
+        key: "Shift",
+        code: "ShiftLeft",
+        shiftKey: type === "keydown",
+        bubbles: true,
+        cancelable: true,
+      });
+      // keyCode can't be set via the constructor; ProseMirror checks it.
+      Object.defineProperty(event, "keyCode", { get: () => 16 });
+      el.dispatchEvent(event);
+    };
+
     const dataTransfer = new DataTransfer();
     dataTransfer.setData("text/plain", resolvedText);
+    shiftEvent("keydown");
     el.dispatchEvent(
       new ClipboardEvent("paste", {
         clipboardData: dataTransfer,
@@ -97,6 +114,7 @@ function pasteIntoChat(text) {
         cancelable: true,
       })
     );
+    shiftEvent("keyup");
   }
 
   showConfidentialityReminder();
